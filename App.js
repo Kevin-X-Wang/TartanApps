@@ -5,7 +5,6 @@ import {
   StyleSheet
 } from 'react-native';
 
-<<<<<<< HEAD
 import MainList from './src/mainPage'
 import Scanner from './src/Scanner'
 export default class App extends Component {
