@@ -3,19 +3,17 @@ import { TabNavigator, StackNavigator } from 'react-navigation';
 import MainList from './src/mainPage'
 import Scanner from './src/Scanner'
 
-export const StackNav= StackNavigator({
+export const StackNav = StackNavigator({
   MainList: {
     screen: MainList,
     navigationOptions: {
-      tabBarLabel: 'Cart',
-      tabBarIcon: ({ tintColor }) => <Icon name="account-circle" size={35} color={tintColor} />
+      headerStyle: { backgroundColor: 'deepskyblue', borderWidth: 1, borderBottomColor: 'white' },
     },
   },
   Scanner: {
     screen: Scanner,
     navigationOptions: {
-      tabBarLabel: 'Scanner',
-      tabBarIcon: ({ tintColor }) => <Icon name="list" size={35} color={tintColor} />,
+      headerStyle: { backgroundColor: 'deepskyblue', borderWidth: 1, borderBottomColor: 'white' },
     },
   },
 });

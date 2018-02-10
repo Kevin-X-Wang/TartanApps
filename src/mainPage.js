@@ -9,50 +9,37 @@ import { TabNavigator, StackNavigator } from 'react-navigation';
 
 export default class MainList extends Component {
 	state = {
-		names: [], //items of form (name, price, quantity)
-		totalprices: 0
+		items: [], //items of form (name, price, quantity)
+		totalprices: 0.00
 	};
 
     //adds item to cart at the end of cart
-	addToCart(name, price, quantity){
+	addToCart(item){
 		this.setState(
 			(prevState) => {
-        prevState.names.push(name);
-				return {names: prevState.names};
+				let {items, totalprices} = prevState;
+				return {
+					items: items.concat(item),
+					totalprices: totalprices + item.price
+				};
 			},
-			() => AsyncStorage.setItem("CART", this.state) //callback
+			//() => AsyncStorage.setItem("CART", this.state) //callback
 		);
 	};
 
     //removes item from cart at index index
     deleteFromCart(index){
-        let requires = index < this.state.names.length
-
-		if(requires) {
+		if(index >= 0) {
 			this.setState(
 				(prevState) => {
-					let quantity = prevState.quantities[index];
-					let price = prevState.prices[index];
-					if(quantity = 1){
-						return{
-							names: prevState.names.slice(index,1),
-							prices: prevState.prices.slice(index,1),
-							quantities: prevState.quantities.slice(index,1),
-							//pictures: prevState.pictures.slice(index,1),
-							totalprices: prevState.totalprices - price,
-
-						};
-					};
-					prevState.quantities[index] = quantity - 1;
+					let {items, totalprices} = prevState;
+					const price = items.splice(index, 1)[0].price
 					return {
-						names: prevState.names,
-						prices: prevState.prices,
-						quantities: prevState.quantities,
-						pictures: prevState.pictures.slice(index,1),
-						totalprices: prevState.totalprices - price,
+						items: items,
+						totalprices: totalprices - price,
 					};
 				},
-				() => AsyncStorage.setItem("CART", this.state)//need function in Cart that saves state
+				//() => AsyncStorage.setItem("CART", this.state)//need function in Cart that saves state
 			);
 		}
     };
@@ -60,24 +47,28 @@ export default class MainList extends Component {
   render() {
     return (
       <View style = {styles.container}>
+      <Text style = {styles.listItem}>{"Total Price: $"+this.state.totalprices}</Text>
       <FlatList
           style={styles.list}
-          data={this.state.names}
+          data={this.state.items}
           renderItem={({ item, index }) =>
             <View>
               <View style={styles.listItemCont}>
                 <Text style={styles.listItem}>
-                  {item.text}
+                  {item.name.slice(0, 20) + "...    $"}
+                  {item.price}
                 </Text>
                 <Button title="X" onPress={() => this.deleteFromCart(index)} />
               </View>
               <View style={styles.hr} />
             </View>}
         />
+        <View>
+        </View>
         <Button
           onPress={() => this.props.navigation.navigate("Scanner",
-                        {addToCart: (name, price, quantity) => this.addToCart(name, price, quantity)})}
-          title="Scan Items"
+                        {addToCart: (item) => this.addToCart(item)})}
+          title="Please Scan Your Items"
         />
         </View>
     );
@@ -90,7 +81,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#F5FCFF",
+    backgroundColor: "#D7F9F6",
     padding: 10,
     paddingTop: 20
   },

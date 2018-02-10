@@ -8,24 +8,23 @@ export default class Scanner extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            item: '',
-            price: '',
+            item: {name: '', price: 0, quantity: 0}, //name, price, quantity
             modalVisible: false,
         }
     }
 
-    closeModal(item, price) {
-        this.props.navigation.state.params.addToCart(item, price, 1);
+    closeModal(item) {
+        this.props.navigation.state.params.addToCart(item);
         this.setState({modalVisible:false});
     }
 
     onBarCodeRead = (e) => {
-        return fetch("http://api.walmartlabs.com/v1/items?apiKey=khejcbpuydkfkvavg5v6q7qb&upc=035000521019")
+        return fetch("http://api.walmartlabs.com/v1/items?apiKey=khejcbpuydkfkvavg5v6q7qb&upc=" + e.data.slice(1))
           .then((response) => response.json())
           .then((responseJson) => {
             this.setState({
-              item: responseJson.items[0]["name"],
-              price: responseJson.items[0]["salePrice"].toFixed(2),
+              item: {name: responseJson.items[0]["name"], price: parseFloat(responseJson.items[0]["salePrice"].toFixed(2)), quantity: 1},
+              //price: responseJson.items[0]["salePrice"].toFixed(2),
               modalVisible: true
             });
           })
@@ -44,11 +43,11 @@ export default class Scanner extends Component {
             >
                 <View style={styles.modalContainer}>
                   <View style={styles.modalInner}>
-                    <Text style={styles.textStyle}>{this.state.item}</Text>
-                    <Text style={styles.bigTextStyle}>{this.state.price}</Text>
+                    <Text style={styles.textStyle}>{this.state.item.name}</Text>
+                    <Text style={styles.bigTextStyle}>{this.state.item.price}</Text>
                     <Button
-                        onPress={() => this.closeModal(this.state.item, this.state.price)}
-                        title="Close modal"
+                        onPress={() => this.closeModal(this.state.item)}
+                        title="Put in Cart"
                     >
                     </Button>
                   </View>
@@ -80,13 +79,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 20,
     fontWeight: 'bold',
-    color: 'red'
+    color: '#19A8D9'
   },
   bigTextStyle: {
     textAlign: 'center',
     fontSize: 60,
     fontWeight: 'bold',
-    color: 'red'
+    color: '#19A8D9'
   },
   modalContainer: {
     flex: 1,
@@ -94,8 +93,9 @@ const styles = StyleSheet.create({
     marginBottom: 200,
     marginLeft: 30,
     marginRight: 30,
+    borderRadius: 10,
     justifyContent: 'center',
-    backgroundColor: 'grey',
+    backgroundColor: '#24352d',
   },
   modalInner: {
     alignItems: 'center',
