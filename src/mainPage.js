@@ -1,29 +1,30 @@
 import React, { Component } from 'react';
-import { AppRegistry, FlatList, StyleSheet, Text, View, 
+import { AppRegistry, FlatList, StyleSheet, Text, View,
   AsyncStorage,
   Button,
   TextInput,
   Keyboard,
   Platform} from 'react-native';
+import { TabNavigator, StackNavigator } from 'react-navigation';
 
 export default class MainList extends Component {
 	state = {
 		names: [], //items of form (name, price, quantity)
         prices: [],
         quantities: [],
-        pictures: [],
+        //pictures: [],
 		totalprices: 0
 	};
-    
+
     //adds item to cart at the end of cart
-	addToCart(name, price, quantity, picture){
+	addToCart(name, price, quantity){
 		this.setState(
 			(prevState) => {
 				return {
 					names: prevState.names.push(name),
 					prices: prevState.prices.push(price),
 					quantities: prevState.quantities.push(quantity),
-					pictures: prevState.pictures.push(picture),
+					//pictures: prevState.pictures.push(picture),
 					totalprices: prevState.totalprices + price*quantity,
 				};
 			},
@@ -45,7 +46,7 @@ export default class MainList extends Component {
 							names: prevState.names.slice(index,1),
 							prices: prevState.prices.slice(index,1),
 							quantities: prevState.quantities.slice(index,1),
-							pictures: prevState.pictures.slice(index,1),
+							//pictures: prevState.pictures.slice(index,1),
 							totalprices: prevState.totalprices - price,
 
 						};
@@ -67,6 +68,7 @@ export default class MainList extends Component {
 
   render() {
     return (
+      <View style = {styles.container}>
       <FlatList
           style={styles.list}
           data={this.state.names}
@@ -81,9 +83,14 @@ export default class MainList extends Component {
               <View style={styles.hr} />
             </View>}
         />
+        <Button
+          onPress={() => navigate('Scanner', { state: this.state })}
+          title="Go to Second Screen"
+        />
+        </View>
     );
   }
-    
+
 };
 
 const styles = StyleSheet.create({
@@ -121,30 +128,4 @@ const styles = StyleSheet.create({
     width: "100%"
   }
 });
-module.export = MainList;
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#F5FCFF",
-  },
-  list: {
-    width: "100%"
-  },
-  listItem: {
-    paddingTop: 2,
-    paddingBottom: 2,
-    fontSize: 18
-  },
-  hr: {
-    height: 1,
-    backgroundColor: "gray"
-  },
-  listItemCont: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between"
-  },
-});
-
 module.export = MainList;

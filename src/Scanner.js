@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, View, StyleSheet, Modal, Button} from 'react-native';
+import {Text, View, StyleSheet, Modal, Button, AsyncStorage} from 'react-native';
 
 import Camera from 'react-native-camera';
 import MainList from './mainPage'
@@ -12,16 +12,15 @@ export default class Scanner extends Component {
             price: '',
             modalVisible: false,
         }
-        Main = new MainList();
     }
 
     closeModal(item, price) {
-        Main.addToCart(item, price, 1);
+        AsyncStorage.getItem("CART").then(data => alert(data));
         this.setState({modalVisible:false});
     }
 
     onBarCodeRead = (e) => {
-        return fetch("http://api.walmartlabs.com/v1/items?apiKey=khejcbpuydkfkvavg5v6q7qb&upc=" + e.data.slice(1))
+        return fetch("http://api.walmartlabs.com/v1/items?apiKey=khejcbpuydkfkvavg5v6q7qb&upc=035000521019")
           .then((response) => response.json())
           .then((responseJson) => {
             this.setState({

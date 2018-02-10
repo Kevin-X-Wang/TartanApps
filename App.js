@@ -5,13 +5,13 @@ import {
   View,
   StyleSheet
 } from 'react-native';
-import{ Tabs, Root } from "./routers.js"
+import{ StackNav } from "./routers.js"
 import MainList from './src/mainPage'
 import Scanner from './src/Scanner'
 
 export default class App extends Component {
     render () {
         return(
-        <Root />
+        <StackNav />
     )};
 }
