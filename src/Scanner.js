@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Text, View, StyleSheet, Modal, Button} from 'react-native';
 
 import Camera from 'react-native-camera';
+import MainList from './mainPage'
 
 export default class Scanner extends Component {
     constructor(props) {
@@ -11,9 +12,11 @@ export default class Scanner extends Component {
             price: '',
             modalVisible: false,
         }
+        Main = new MainList();
     }
 
-    closeModal() {
+    closeModal(item, price) {
+        Main.addToCart(item, price, 1);
         this.setState({modalVisible:false});
     }
 
@@ -45,7 +48,7 @@ export default class Scanner extends Component {
                     <Text style={styles.textStyle}>{this.state.item}</Text>
                     <Text style={styles.bigTextStyle}>{this.state.price}</Text>
                     <Button
-                        onPress={() => this.closeModal()}
+                        onPress={() => this.closeModal(this.state.item, this.state.price)}
                         title="Close modal"
                     >
                     </Button>
