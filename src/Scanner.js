@@ -15,7 +15,7 @@ export default class Scanner extends Component {
     }
 
     closeModal(item, price) {
-        AsyncStorage.getItem("CART").then(data => alert(data));
+        this.props.navigation.state.params.addToCart(item, price, 1);
         this.setState({modalVisible:false});
     }
 

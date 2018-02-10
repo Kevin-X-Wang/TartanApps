@@ -10,9 +10,6 @@ import { TabNavigator, StackNavigator } from 'react-navigation';
 export default class MainList extends Component {
 	state = {
 		names: [], //items of form (name, price, quantity)
-        prices: [],
-        quantities: [],
-        //pictures: [],
 		totalprices: 0
 	};
 
@@ -20,13 +17,8 @@ export default class MainList extends Component {
 	addToCart(name, price, quantity){
 		this.setState(
 			(prevState) => {
-				return {
-					names: prevState.names.push(name),
-					prices: prevState.prices.push(price),
-					quantities: prevState.quantities.push(quantity),
-					//pictures: prevState.pictures.push(picture),
-					totalprices: prevState.totalprices + price*quantity,
-				};
+        prevState.names.push(name);
+				return {names: prevState.names};
 			},
 			() => AsyncStorage.setItem("CART", this.state) //callback
 		);
@@ -65,7 +57,6 @@ export default class MainList extends Component {
 		}
     };
 
-
   render() {
     return (
       <View style = {styles.container}>
@@ -84,8 +75,9 @@ export default class MainList extends Component {
             </View>}
         />
         <Button
-          onPress={() => navigate('Scanner', { state: this.state })}
-          title="Go to Second Screen"
+          onPress={() => this.props.navigation.navigate("Scanner",
+                        {addToCart: (name, price, quantity) => this.addToCart(name, price, quantity)})}
+          title="Scan Items"
         />
         </View>
     );
