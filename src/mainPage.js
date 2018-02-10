@@ -67,13 +67,58 @@ export default class MainList extends Component {
 
   render() {
     return (
-      <View>
-      	<Text> HEllo World! </Text>
-      </View>
+      <FlatList
+          style={styles.list}
+          data={this.state.names}
+          renderItem={({ item, index }) =>
+            <View>
+              <View style={styles.listItemCont}>
+                <Text style={styles.listItem}>
+                  {item.text}
+                </Text>
+                <Button title="X" onPress={() => this.deleteFromCart(index)} />
+              </View>
+              <View style={styles.hr} />
+            </View>}
+        />
     );
   }
     
 };
 
-
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#F5FCFF",
+    padding: 10,
+    paddingTop: 20
+  },
+  list: {
+    width: "100%"
+  },
+  listItem: {
+    paddingTop: 2,
+    paddingBottom: 2,
+    fontSize: 18
+  },
+  hr: {
+    height: 1,
+    backgroundColor: "gray"
+  },
+  listItemCont: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between"
+  },
+  textInput: {
+    height: 40,
+    paddingRight: 10,
+    paddingLeft: 10,
+    borderColor: "gray",
+    borderWidth: (Platform.OS == "android") ? 0 : 1,
+    width: "100%"
+  }
+});
 module.export = MainList;
