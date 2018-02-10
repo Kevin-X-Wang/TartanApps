@@ -22,7 +22,7 @@ export default class Scanner extends Component {
           .then((responseJson) => {
             this.setState({
               item: responseJson.items[0]["name"],
-              price: responseJson.items[0]["salePrice"]
+              price: responseJson.items[0]["salePrice"].toFixed(2)
             });
           })
           .catch((error) => {
